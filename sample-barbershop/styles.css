@@ -1,0 +1,538 @@
+/* ==========================================================================
+   Auto-service site — stylesheet
+   Aesthetic: the service bay. Concrete floor (light cool gray), tool steel
+   (graphite), one signal-amber accent (hydraulic/hazard). Monospace for data
+   and labels = the "instrument readout" signature. No web fonts (fast + works
+   inside Russia). Deliberately NOT cream+serif+sage, NOT purple, NOT neon.
+   ========================================================================== */
+
+:root {
+  /* --- palette (sampled from a workshop: concrete, steel, hazard amber) --- */
+  --ink:        #16181d;   /* near-black graphite: dark sections + primary text */
+  --steel:      #23262e;   /* dark surface */
+  --steel-2:    #2e323c;   /* raised dark surface */
+  --concrete:   #e9ebee;   /* page background — cool light gray, not cream */
+  --paper:      #f6f7f8;   /* light card surface */
+  --line:       #d3d7dc;   /* hairline on light */
+  --line-dark:  #3a3e48;   /* hairline on dark */
+  --muted:      #5b616b;   /* secondary text on light */
+  --muted-dark: #a2a8b2;   /* secondary text on dark */
+  --amber:      #f2a20c;   /* signal accent */
+  --amber-hi:   #ffb220;   /* amber, brighter for dark bg */
+  --danger:     #d34a2f;   /* brake-caliper red — warnings/urgency only */
+  --text:       #16181d;   /* body text on the page surface (skins may invert) */
+
+  /* --- type --- */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Helvetica Neue", "Arial Nova", "Segoe UI", Arial, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", Consolas, monospace;
+
+  /* --- one spacing scale (no arbitrary values anywhere) --- */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 24px;
+  --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+
+  /* --- small intentional radius scale (not one big value everywhere) --- */
+  --r1: 3px;  --r2: 6px;  --r3: 10px;
+
+  --wrap: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--concrete);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--s5); }
+
+/* ---- shared type treatments ---- */
+.eyebrow {                       /* mono label = instrument tag */
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--a-text, var(--amber));   /* contrast-fitted accent for small text */
+  margin: 0 0 var(--s3);
+}
+.eyebrow--dark { color: var(--a-text-dark, var(--amber-hi)); }
+
+.h-display {                     /* headline: heavy, tight, upper */
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section { padding: var(--s9) 0; }
+.section__head { max-width: 640px; margin: 0 0 var(--s7); }
+.section__title { font-size: clamp(28px, 4vw, 40px); }
+.section__lead { color: var(--muted); font-size: 18px; margin: var(--s4) 0 0; }
+
+/* ==========================================================================
+   Sticky call bar — the #1 job for an auto shop is a phone call
+   ========================================================================== */
+.callbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--ink); color: #fff;
+  border-bottom: 1px solid var(--line-dark);
+}
+.callbar__in {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s4); min-height: 84px;
+}
+.callbar__name {
+  font-family: var(--font-display);
+  font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em;
+  font-size: 18px;
+}
+.callbar__name span { color: var(--a-text-dark, var(--amber)); }
+/* logo on the dark bar: a light chip guarantees any logo colour stays visible */
+.callbar__logo {
+  display: inline-flex; align-items: center;
+  background: #fff; border-radius: var(--r1); padding: 1.5px 2.5px;
+}
+.callbar__logo img {
+  height: 72px; width: auto; max-width: 300px; object-fit: contain; display: block;
+}
+@media (max-width: 560px) { .callbar__logo img { height: 56px; max-width: 210px; } }
+.callbar__actions { display: flex; align-items: center; gap: var(--s4); }
+.callbar__phone {
+  font-family: var(--font-mono); font-size: 16px; font-weight: 600;
+  text-decoration: none; letter-spacing: 0.01em;
+  display: flex; align-items: center; gap: var(--s2);
+}
+.callbar__phone:hover { color: var(--a-text-dark, var(--amber-hi)); }
+
+/* ==========================================================================
+   Hero — dashboard/instrument-cluster signature
+   ========================================================================== */
+.hero { background: var(--ink); color: #fff; overflow: hidden; }
+.hero__in {
+  display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--s8);
+  padding: var(--s9) 0; align-items: center;
+}
+.hero__cat { color: var(--muted-dark); }
+.hero__title { font-size: clamp(38px, 6vw, 68px); margin: 0 0 var(--s5); }
+.hero__title span { color: var(--a-text-dark, var(--amber)); }
+.hero__lead {
+  font-size: 19px; color: #d7dade; max-width: 46ch; margin: 0 0 var(--s6);
+}
+.hero__cta { display: flex; gap: var(--s3); flex-wrap: wrap; }
+
+/* instrument cluster */
+.cluster {
+  border: 1px solid var(--line-dark); border-radius: var(--r3);
+  background: linear-gradient(180deg, var(--steel-2), var(--steel));
+  padding: var(--s6);
+}
+.cluster__grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5);
+}
+/* odd stat out (1 or 3): the last one spans the full row so no ragged gap */
+.cluster__grid .gauge:nth-child(3):last-child,
+.cluster__grid .gauge:first-child:last-child { grid-column: 1 / -1; }
+
+/* rating — the headline trust number, big and pronounced, at the cluster's foot */
+.rating-hero {
+  margin-top: var(--s5); padding-top: var(--s5);
+  border-top: 1px solid var(--line-dark);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px;
+}
+.rating-hero__stars {
+  color: var(--a-text-dark, var(--amber)); font-size: 20px; letter-spacing: 0.12em;
+}
+.rating-hero__num {
+  font-family: var(--font-mono); font-weight: 700; color: #fff;
+  font-size: 64px; line-height: 1; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums; display: flex; align-items: baseline;
+  justify-content: center; gap: var(--s2);
+}
+.rating-hero__num small {
+  font-size: 22px; color: var(--muted-dark); font-weight: 700; letter-spacing: 0;
+}
+.rating-hero__label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted-dark); margin-top: var(--s2);
+}
+.gauge { border-left: 2px solid var(--amber); padding-left: var(--s4); }
+.gauge__num {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 34px; line-height: 1; letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums; color: #fff;
+}
+.gauge__num small { font-size: 18px; color: var(--muted-dark); }
+.gauge__num--sm { font-size: 21px; line-height: 1.2; }   /* award names, not numbers */
+.gauge__label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted-dark); margin-top: var(--s2);
+}
+.cluster__note {
+  margin: var(--s5) 0 0; padding-top: var(--s4);
+  border-top: 1px solid var(--line-dark);
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted-dark);
+  display: flex; align-items: center; gap: var(--s2);
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--font-body); font-weight: 700; font-size: 16px;
+  padding: 14px var(--s5); border-radius: var(--r2);
+  text-decoration: none; border: 1px solid transparent; cursor: pointer;
+  transition: transform .08s ease, background .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn--primary { background: var(--btn-bg, var(--amber)); color: var(--btn-ink, var(--ink)); }
+.btn--primary:hover { background: var(--btn-hov, var(--amber-hi)); }
+.btn--ghost { background: transparent; color: #fff; border-color: var(--line-dark); }
+.btn--ghost:hover { border-color: var(--amber); color: var(--a-text-dark, var(--amber-hi)); }
+.btn--dark { background: var(--ink); color: #fff; }
+.btn--dark:hover { background: var(--steel-2); }
+
+/* ==========================================================================
+   Hazard stripe — workshop tape; the one decorative signature, used once
+   ========================================================================== */
+.stripe {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg,
+    var(--amber) 0 14px, var(--ink) 14px 28px);
+}
+
+/* ==========================================================================
+   Reviews strip — right under the hero: rating headline + 3 compact cards
+   ========================================================================== */
+.revstrip { background: var(--paper); border-bottom: 1px solid var(--line); }
+.revstrip__in { padding: var(--s7) 0; }
+.revstrip__head {
+  display: flex; align-items: baseline; gap: var(--s4); flex-wrap: wrap;
+  margin-bottom: var(--s5);
+}
+.revstrip__stars { color: var(--a-text, var(--amber)); font-size: 22px; letter-spacing: 0.08em; }
+.revstrip__title { font-size: 20px; margin: 0; }
+.revstrip__count { color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+.rev3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
+/* fewer than 3 real quotes: center the cards, don't stretch or pad with fakes */
+.rev3--n2 { grid-template-columns: repeat(2, minmax(0, 360px)); justify-content: center; }
+.rev3--n1 { grid-template-columns: minmax(0, 480px); justify-content: center; }
+.quote--sm { padding: var(--s5); background: var(--concrete); }
+.quote--sm .quote__text { font-size: 15px; margin: var(--s2) 0 var(--s3); }
+
+/* ==========================================================================
+   Process — how a visit goes; a real sequence, so numbers carry meaning
+   ========================================================================== */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s5); }
+.step { border-top: 2px solid var(--ink); padding-top: var(--s4); }
+.step__num {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  color: var(--a-text, var(--amber)); letter-spacing: 0.1em;
+}
+.step__name { font-weight: 700; margin: var(--s2) 0; font-size: 17px; }
+.step__text { color: var(--muted); font-size: 15px; margin: 0; }
+
+/* ==========================================================================
+   Brands strip — inside the dark proof section
+   ========================================================================== */
+.brands {
+  margin-top: var(--s6); padding-top: var(--s5);
+  border-top: 1px solid var(--line-dark);
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); align-items: baseline;
+}
+.brands__label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted-dark); width: 100%;
+}
+.brands__item {
+  font-family: var(--font-mono); font-size: 14px; color: #d7dade;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   FAQ — native accordion, no JS
+   ========================================================================== */
+.faq { max-width: 760px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  cursor: pointer; font-weight: 700; font-size: 17px;
+  padding: var(--s4) 0; list-style: none; position: relative; padding-right: var(--s6);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; position: absolute; right: var(--s2); top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono); color: var(--a-text, var(--amber)); font-size: 20px; font-weight: 400;
+}
+.faq details[open] summary::after { content: "–"; }
+.faq details p { color: var(--muted); margin: 0 0 var(--s4); max-width: 60ch; }
+
+/* ==========================================================================
+   Price board — the workshop board, left-aligned, mono prices, tabular
+   ========================================================================== */
+.board { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s8); }
+.board__col { border-top: 2px solid var(--ink); }
+.price {
+  display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+  gap: var(--s4); padding: var(--s4) 0; border-bottom: 1px solid var(--line);
+}
+.price__name { font-weight: 600; }
+.price__note { display: block; color: var(--muted); font-size: 14px; font-weight: 400; margin-top: 2px; }
+.price__val {
+  font-family: var(--font-mono); font-weight: 700; font-size: 18px;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.price__val small { color: var(--muted); font-weight: 400; font-size: 13px; }
+.board__foot {
+  grid-column: 1 / -1; margin-top: var(--s6); color: var(--muted);
+  font-size: 15px; display: flex; gap: var(--s2); align-items: center;
+}
+
+/* ==========================================================================
+   Proof strip — concrete facts, not slogans. Asymmetric.
+   ========================================================================== */
+.proof { background: var(--ink); color: #fff; }
+.proof__grid {
+  display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--s6);
+}
+.proof__lead { }
+.proof__lead .h-display { font-size: clamp(26px, 3.5vw, 36px); }
+.proof__lead p { color: #d7dade; margin: var(--s4) 0 0; }
+.fact { border-top: 1px solid var(--line-dark); padding-top: var(--s4); }
+.fact__big {
+  font-family: var(--font-mono); font-weight: 700; font-size: 30px;
+  color: var(--a-text-dark, var(--amber-hi)); font-variant-numeric: tabular-nums;
+}
+.fact__small { color: var(--muted-dark); margin-top: var(--s2); font-size: 15px; }
+
+/* ==========================================================================
+   Gallery — real photos of the work. Graceful when photos absent.
+   ========================================================================== */
+.gallery__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
+.shot {
+  aspect-ratio: 4 / 3; border-radius: var(--r2); overflow: hidden;
+  background: var(--steel); position: relative;
+}
+.shot img { width: 100%; height: 100%; object-fit: cover; }
+.shot--empty {
+  display: flex; align-items: center; justify-content: center;
+  border: 1px dashed var(--line); background: var(--paper); color: var(--muted);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; text-align: center; padding: var(--s4);
+}
+
+/* ==========================================================================
+   Reviews — reuse their strongest asset (the real Yandex rating)
+   ========================================================================== */
+.reviews__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s5); }
+.quote {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r2); padding: var(--s6);
+}
+.quote__stars { color: var(--a-text, var(--amber)); letter-spacing: 0.1em; font-size: 15px; }
+.quote__text { margin: var(--s3) 0 var(--s4); }
+.quote__by { color: var(--muted); font-size: 14px; font-family: var(--font-mono); }
+
+/* ==========================================================================
+   Location + contact form
+   ========================================================================== */
+.contact__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s8); }
+.info__row { display: grid; grid-template-columns: 110px 1fr; gap: var(--s4); padding: var(--s4) 0; border-bottom: 1px solid var(--line); }
+.info__k { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.info__v { font-weight: 500; }
+.info__v a { color: var(--text); text-decoration-color: var(--amber); text-underline-offset: 3px; }
+
+.form { background: var(--ink); color: #fff; border-radius: var(--r3); padding: var(--s7); }
+.form label { display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-dark); margin: 0 0 var(--s2); }
+.form input {
+  width: 100%; padding: 13px var(--s4); margin-bottom: var(--s5);
+  background: var(--steel); border: 1px solid var(--line-dark);
+  border-radius: var(--r2); color: #fff; font-size: 16px; font-family: var(--font-body);
+}
+.form input:focus { outline: 2px solid var(--a-text-dark, var(--amber)); outline-offset: 1px; border-color: var(--a-text-dark, var(--amber)); }
+.form__note { color: var(--muted-dark); font-size: 13px; margin: var(--s4) 0 0; }
+.form__hp { position: absolute; left: -9999px; top: -9999px; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.foot { background: var(--ink); color: var(--muted-dark); padding: var(--s7) 0; }
+.foot__in { display: flex; justify-content: space-between; gap: var(--s5); flex-wrap: wrap; align-items: center; font-size: 14px; }
+.foot a { color: var(--muted-dark); }
+.foot a:hover { color: #fff; }
+
+/* ==========================================================================
+   Responsive — test with long Russian service names
+   ========================================================================== */
+@media (max-width: 900px) {
+  .hero__in { grid-template-columns: 1fr; gap: var(--s7); padding: var(--s8) 0; }
+  .rev3 { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .board, .contact__grid, .reviews__grid { grid-template-columns: 1fr; gap: var(--s5); }
+  .board__col:last-child { border-top: none; }
+  .proof__grid { grid-template-columns: 1fr 1fr; }
+  .proof__lead { grid-column: 1 / -1; }
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: var(--s8) 0; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .callbar__name { font-size: 15px; }
+  .callbar__phone span.txt { display: none; }   /* keep just the number on tiny screens */
+  .cluster__grid, .proof__grid, .gallery__grid { grid-template-columns: 1fr 1fr; }
+  .hero__cta { flex-direction: row; flex-wrap: wrap; }
+  .hero__cta .btn { justify-content: center; flex: 1 1 100%; }
+  .hero__cta .btn--msg { flex: 1 1 calc(50% - var(--s2)); } /* TG + WA share a row */
+  .wrap { padding: 0 var(--s4); }
+}
+
+/* ==========================================================================
+   v3 — photo hero
+   ========================================================================== */
+.hero--photo { position: relative; background: var(--ink); }
+.hero--photo::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--hero-img);
+  background-size: cover; background-position: center;
+  opacity: 0.34; filter: saturate(0.7) contrast(1.05);
+}
+.hero--photo::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(22,24,29,0.92) 0%, rgba(22,24,29,0.55) 60%, rgba(22,24,29,0.8) 100%);
+}
+.hero--photo .hero__in { position: relative; z-index: 1; }
+
+/* ==========================================================================
+   v3 — oversized section numerals (structure as information)
+   ========================================================================== */
+.section__head { position: relative; }
+.section__num {
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.14em; color: var(--muted);
+}
+.section__num b { color: var(--a-text, var(--amber)); font-weight: 700; }
+
+/* ==========================================================================
+   v3 — scroll reveal + hover lift (subtle, honors reduced motion)
+   ========================================================================== */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
+.quote, .step, .shot, .gcard { transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.quote:hover, .gcard:hover { transform: translateY(-2px); border-color: var(--amber); box-shadow: 0 6px 18px rgba(22,24,29,0.08); }
+
+/* ==========================================================================
+   v3 — guarantees / transparency cards (exact numbers, not slogans)
+   ========================================================================== */
+.gwrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
+.gcard {
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r2);
+  padding: var(--s5); border-top: 2px solid var(--amber);
+}
+.gcard__big { font-family: var(--font-mono); font-weight: 700; font-size: 24px; }
+.gcard__txt { color: var(--muted); font-size: 15px; margin-top: var(--s2); }
+
+/* ==========================================================================
+   v3 — price calculator (3 steps: brand → service → estimate)
+   ========================================================================== */
+.calc { background: var(--ink); color: #fff; border-radius: var(--r3); padding: var(--s7); }
+.calc__step { display: none; }
+.calc__step.on { display: block; }
+.calc__q { font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+  font-size: 22px; margin: 0 0 var(--s5); letter-spacing: -0.01em; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.chip {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  padding: 10px var(--s4); border-radius: var(--r2); cursor: pointer;
+  background: var(--steel); color: #fff; border: 1px solid var(--line-dark);
+}
+.chip:hover { border-color: var(--amber); }
+.chip.sel { background: var(--btn-bg, var(--amber)); color: var(--btn-ink, var(--ink)); border-color: var(--btn-bg, var(--amber)); }
+.calc__nav { margin-top: var(--s6); display: flex; gap: var(--s3); align-items: center; }
+.calc__back { background: none; border: none; color: var(--muted-dark); cursor: pointer;
+  font-family: var(--font-mono); font-size: 13px; }
+.calc__back:hover { color: #fff; }
+.calc__res { border-left: 2px solid var(--amber); padding-left: var(--s5); margin: var(--s5) 0; }
+.calc__price { font-family: var(--font-mono); font-weight: 700; font-size: 34px; color: var(--a-text-dark, var(--amber-hi)); }
+.calc__note { color: var(--muted-dark); font-size: 14px; margin-top: var(--s2); }
+.calc__prog { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em;
+  color: var(--muted-dark); text-transform: uppercase; margin-bottom: var(--s4); }
+
+/* ==========================================================================
+   v3 — diagnostics checklist lead magnet
+   ========================================================================== */
+.diag { border: 1px solid var(--line); border-radius: var(--r3); background: var(--paper); padding: var(--s7); }
+.diag__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); margin-top: var(--s5); }
+.diag__col h3 { font-size: 15px; margin: 0 0 var(--s3); font-family: var(--font-mono);
+  text-transform: uppercase; letter-spacing: .08em; }
+.diag__col ul { list-style: none; margin: 0; padding: 0; }
+.diag__col li { padding: var(--s1) 0 var(--s1) var(--s5); position: relative; color: var(--muted); font-size: 15px; }
+.diag__col li::before { content: "✓"; position: absolute; left: 0; color: var(--a-text, var(--amber));
+  font-weight: 700; font-family: var(--font-mono); }
+
+/* ==========================================================================
+   v3 — comparison table (Мы / Дилер / Гараж)
+   ========================================================================== */
+.cmp { width: 100%; border-collapse: collapse; font-size: 15px; }
+.cmp th, .cmp td { text-align: left; padding: var(--s3) var(--s4); border-bottom: 1px solid var(--line); }
+.cmp th { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted); font-weight: 600; }
+.cmp th.us, .cmp td.us { background: var(--paper); border-left: 2px solid var(--amber); font-weight: 700; }
+.cmp td { color: var(--muted); } .cmp td.us { color: var(--text); }
+.cmp-scroll { overflow-x: auto; }
+
+/* ==========================================================================
+   v3 — floating messenger button
+   ========================================================================== */
+.fabs {
+  position: fixed; right: var(--s5); bottom: var(--s7); z-index: 60;
+  display: flex; flex-direction: column; gap: var(--s2); align-items: flex-end;
+}
+.fab {
+  display: flex; align-items: center;
+  height: 48px; padding: 0 15px;               /* 18px icon + 15px sides = circle */
+  background: var(--ink); color: #fff; text-decoration: none;
+  border: 1px solid var(--line-dark); border-radius: 999px;
+  font-weight: 700; font-size: 15px; white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(22,24,29,0.35);
+}
+.fab:hover, .fab:focus-visible { border-color: var(--amber); color: var(--a-text-dark, var(--amber-hi)); }
+.fab svg { width: 18px; height: 18px; fill: var(--a-text-dark, var(--amber)); flex: none; }
+.fab__label {                                   /* hidden until hover/focus */
+  max-width: 0; opacity: 0; margin-left: 0; overflow: hidden;
+  transition: max-width .25s ease, opacity .2s ease, margin-left .25s ease;
+}
+.fab:hover .fab__label, .fab:focus-visible .fab__label {
+  max-width: 180px; opacity: 1; margin-left: var(--s2);
+}
+@media (prefers-reduced-motion: reduce) { .fab__label { transition: none; } }
+.btn--msg svg { width: 17px; height: 17px; fill: currentColor; }
+
+/* v3 responsive */
+@media (max-width: 900px) {
+  .gwrap, .diag__grid { grid-template-columns: 1fr; }
+  .calc { padding: var(--s6); }
+}
+@media (max-width: 560px) {
+  .fabs { right: var(--s4); bottom: 68px; }
+}
+
+/* accessibility: visible focus everywhere, contrast-fitted per surface */
+a:focus-visible, .btn:focus-visible, input:focus-visible { outline: 2px solid var(--a-text, var(--amber)); outline-offset: 2px; }
+/* elements on dark panels get the dark-surface variant */
+.chip:focus-visible, .calc__back:focus-visible, .form input:focus-visible,
+.btn--ghost:focus-visible, .fab:focus-visible { outline: 2px solid var(--a-text-dark, var(--amber-hi)); outline-offset: 2px; }
+/* calculator step headings receive programmatic focus — ring only for keyboard */
+.calc__q[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+.calc__q:focus-visible { outline: 2px solid var(--a-text-dark, var(--amber-hi)); outline-offset: 4px; }

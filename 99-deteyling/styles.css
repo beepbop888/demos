@@ -216,7 +216,7 @@ a { color: inherit; }
    Reviews strip — right under the hero: rating headline + 3 compact cards
    ========================================================================== */
 .revstrip { background: var(--paper); border-bottom: 1px solid var(--line); }
-.revstrip__in { padding: var(--s7) 0; }
+.revstrip__in { padding: var(--s5) 0; }
 .revstrip__head {
   display: flex; align-items: baseline; gap: var(--s4); flex-wrap: wrap;
   margin-bottom: var(--s5);

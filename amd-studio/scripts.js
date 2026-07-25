@@ -55,12 +55,15 @@
   if (calc && DATA.services && DATA.services.length) {
     var state = { brand: null, service: null };
     var steps = calc.querySelectorAll(".calc__step");
+    var nSteps = steps.length;                          // 2 (no brands) or 3
+    var brandBox = calc.querySelector("[data-brands]"); // absent in 2-step mode
+    var svcIndex = brandBox ? 1 : 0;                    // which step is services
     // moveFocus=true on user-initiated changes: keyboard/screen-reader users
     // land on the new step's heading instead of a hidden button
     function show(i, moveFocus) {
       steps.forEach(function (s, j) { s.classList.toggle("on", i === j); });
       var prog = calc.querySelector(".calc__prog");   // aria-live announces it
-      if (prog) prog.textContent = "Шаг " + (i + 1) + " из 3";
+      if (prog) prog.textContent = "Шаг " + (i + 1) + " из " + nSteps;
       if (moveFocus) {
         var q = steps[i].querySelector(".calc__q");
         if (q) { q.setAttribute("tabindex", "-1"); q.focus(); }
@@ -72,16 +75,17 @@
       });
       chip.classList.add("sel"); chip.setAttribute("aria-pressed", "true");
     }
-    // step 1: brands
-    var brandBox = calc.querySelector("[data-brands]");
-    (DATA.brands || []).concat([DATA.brand_other || "Другая марка"]).forEach(function (b) {
-      var c = document.createElement("button");
-      c.type = "button"; c.className = "chip"; c.textContent = b;
-      c.setAttribute("aria-pressed", "false");
-      c.addEventListener("click", function () { state.brand = b; select(brandBox, c); show(1, true); });
-      brandBox.appendChild(c);
-    });
-    // step 2: services
+    // step 1 (only when the niche has brands): brand/marque chips
+    if (brandBox) {
+      (DATA.brands || []).concat([DATA.brand_other || "Другая марка"]).forEach(function (b) {
+        var c = document.createElement("button");
+        c.type = "button"; c.className = "chip"; c.textContent = b;
+        c.setAttribute("aria-pressed", "false");
+        c.addEventListener("click", function () { state.brand = b; select(brandBox, c); show(svcIndex, true); });
+        brandBox.appendChild(c);
+      });
+    }
+    // service step
     var svcBox = calc.querySelector("[data-services]");
     DATA.services.forEach(function (s) {
       var c = document.createElement("button");
@@ -94,7 +98,7 @@
           (String(s.price).match(/^от/i) ? s.price : s.price) + " ₽";
         res.querySelector("[data-svc-name]").textContent =
           s.name + (state.brand && state.brand !== "Другая марка" ? " — " + state.brand : "");
-        show(2, true);
+        show(nSteps - 1, true);
       });
       svcBox.appendChild(c);
     });
