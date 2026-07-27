@@ -213,17 +213,12 @@ a { color: inherit; }
 }
 
 /* ==========================================================================
-   Reviews strip — right under the hero: rating headline + 3 compact cards
+   Reviews strip — right under the hero: 3 compact quote cards, no header.
+   The rating and review count live in the hero cluster directly above; the
+   colored stripe separates the two, so a header row here only repeated them.
    ========================================================================== */
 .revstrip { background: var(--paper); border-bottom: 1px solid var(--line); }
 .revstrip__in { padding: var(--s5) 0; }
-.revstrip__head {
-  display: flex; align-items: baseline; gap: var(--s4); flex-wrap: wrap;
-  margin-bottom: var(--s5);
-}
-.revstrip__stars { color: var(--a-text, var(--amber)); font-size: 22px; letter-spacing: 0.08em; }
-.revstrip__title { font-size: 20px; margin: 0; }
-.revstrip__count { color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
 .rev3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
 /* fewer than 3 real quotes: center the cards, don't stretch or pad with fakes */
 .rev3--n2 { grid-template-columns: repeat(2, minmax(0, 360px)); justify-content: center; }
