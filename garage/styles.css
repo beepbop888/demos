@@ -100,9 +100,11 @@ a { color: inherit; }
   font-size: 18px;
 }
 .callbar__name span { color: var(--a-text-dark, var(--amber)); }
-/* logo on the dark bar: a light chip guarantees any logo colour stays visible */
-.callbar__logo {
-  display: inline-flex; align-items: center;
+/* Logo on the dark bar. A cut-out logo (transparent background) sits directly
+   on the bar — no chip, nothing framing it. Everything else keeps the light
+   chip, which is what guarantees a dark logo stays visible against the ink. */
+.callbar__logo { display: inline-flex; align-items: center; }
+.callbar__logo--chip {
   background: #fff; border-radius: var(--r1); padding: 1.5px 2.5px;
 }
 .callbar__logo img {
