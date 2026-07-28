@@ -340,6 +340,8 @@ a { color: inherit; }
 .quote__stars { color: var(--a-text, var(--amber)); letter-spacing: 0.1em; font-size: 15px; }
 .quote__text { margin: var(--s3) 0 var(--s4); }
 .quote__by { color: var(--muted); font-size: 14px; font-family: var(--font-mono); }
+/* the score that reviewer gave, directly under their name */
+.quote__by + .quote__stars { margin-top: 2px; font-size: 14px; }
 
 /* ==========================================================================
    Location + contact form
