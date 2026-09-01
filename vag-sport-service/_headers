@@ -1,0 +1,19 @@
+# Security headers for static hosts (Netlify, Cloudflare Pages).
+# Place this file (named exactly "_headers", no extension) in the site root.
+# Adjust the CSP script/style/connect sources to match the widgets THIS site uses.
+
+/*
+  # Force HTTPS for 2 years, including subdomains
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  # Stop the site being framed by others (clickjacking)
+  X-Frame-Options: SAMEORIGIN
+  # Stop browsers guessing file types (MIME-sniffing attacks)
+  X-Content-Type-Options: nosniff
+  # Don't leak the full URL to other sites
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Turn off powerful browser features the site doesn't need
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  # Content Security Policy: only load scripts/styles/frames we explicitly allow.
+  # Default below allows: self, Yandex Metrica, Yandex SmartCaptcha, Yandex Maps.
+  # ADD a source here for every widget you embed (chat, booking) — nothing else runs.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yandex.ru https://api-maps.yandex.ru https://smartcaptcha.yandexcloud.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://mc.yandex.ru https://smartcaptcha.yandexcloud.net; frame-src https://yandex.ru https://smartcaptcha.yandexcloud.net; object-src 'none'; base-uri 'self'; form-action 'self'
